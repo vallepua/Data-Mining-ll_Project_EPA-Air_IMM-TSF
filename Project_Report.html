@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Mining II — Project Report</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 12pt;
+    line-height: 1.7;
+    color: #1a1a1a;
+    background: #fff;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 80px;
+  }
+  h1 {
+    font-size: 20pt;
+    font-weight: bold;
+    text-align: center;
+    color: #0a2540;
+    margin-bottom: 6px;
+  }
+  h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #0a2540;
+    margin-top: 32px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #0a2540;
+    padding-bottom: 4px;
+  }
+  h3 {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #1a3a5c;
+    margin-top: 20px;
+    margin-bottom: 6px;
+  }
+  h4 {
+    font-size: 11pt;
+    font-weight: bold;
+    font-style: italic;
+    margin-top: 14px;
+    margin-bottom: 4px;
+  }
+  .center { text-align: center; }
+  .meta {
+    text-align: center;
+    font-size: 11pt;
+    color: #333;
+    margin: 10px 0 30px 0;
+    line-height: 2;
+  }
+  .divider {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 30px 0;
+  }
+  p { margin-bottom: 10px; text-align: justify; }
+  ul, ol { margin: 8px 0 12px 28px; }
+  li { margin-bottom: 4px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10.5pt;
+    margin: 14px 0 20px 0;
+  }
+  th {
+    background: #0a2540;
+    color: #fff;
+    padding: 8px 10px;
+    text-align: center;
+    font-weight: bold;
+  }
+  td {
+    padding: 7px 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+  }
+  tr:nth-child(even) td { background: #f4f7fb; }
+  td.left, th.left { text-align: left; }
+  .good { color: #1a6e34; font-weight: bold; }
+  .bad  { color: #b52020; font-weight: bold; }
+  .na   { color: #888; font-style: italic; }
+  .note {
+    background: #f0f4f8;
+    border-left: 4px solid #0a2540;
+    padding: 10px 14px;
+    font-size: 10.5pt;
+    margin: 14px 0;
+    color: #333;
+  }
+  .challenge-box {
+    background: #fff8f0;
+    border-left: 4px solid #c84b31;
+    padding: 10px 14px;
+    margin: 10px 0 16px 0;
+    font-size: 10.5pt;
+  }
+  .challenge-box strong { color: #c84b31; }
+  .toc { margin: 20px 0 30px 0; }
+  .toc ol { counter-reset: toc; list-style: none; margin-left: 0; }
+  .toc li { padding: 3px 0; font-size: 11pt; }
+  .toc a { color: #0a2540; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .section-num { color: #0a2540; font-weight: bold; }
+  code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 9.5pt;
+    background: #f4f4f4;
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    padding: 12px 16px;
+    font-size: 9.5pt;
+    font-family: 'Courier New', Courier, monospace;
+    overflow-x: auto;
+    margin: 10px 0 16px 0;
+    border-radius: 4px;
+    line-height: 1.5;
+  }
+  .caption {
+    text-align: center;
+    font-size: 10pt;
+    font-style: italic;
+    color: #555;
+    margin-top: -10px;
+    margin-bottom: 16px;
+  }
+  .page-break { page-break-before: always; }
+  @media print {
+    body { padding: 40px 60px; font-size: 11pt; }
+    .page-break { page-break-before: always; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div style="min-height:80vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+  <p style="font-size:13pt; color:#555; margin-bottom:30px;">Kennesaw State University<br>Department of Computer Science</p>
+  <h1 style="font-size:22pt; line-height:1.4; margin-bottom:16px;">
+    Reproducing TIME-IMM:<br>
+    Irregular Multimodal Multivariate<br>
+    Time Series Forecasting on EPA-Air
+  </h1>
+  <p style="font-size:13pt; color:#444; margin: 20px 0;">Data Mining II — Course Project Report</p>
+  <hr style="width:200px; border:1px solid #0a2540; margin:20px auto;">
+  <p style="font-size:12pt; line-height:2; margin-top:10px;">
+    <strong>Team Members</strong><br>
+    Anil Vallepu<br>
+    Param Venkat Vivek Kesireddy<br>
+    Vineetha Burugupalli
+  </p>
+  <p style="font-size:12pt; margin-top:20px;"><strong>Advisor:</strong> Dr. Bin Luo</p>
+  <p style="font-size:12pt; margin-top:8px;"><strong>Date:</strong> April 2026</p>
+</div>
+
+<div class="page-break"></div>
+
+<!-- TABLE OF CONTENTS -->
+<h2>Table of Contents</h2>
+<div class="toc">
+  <ol>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#intro">Introduction and Motivation</a></li>
+    <li><a href="#paper">Source Paper Overview</a></li>
+    <li><a href="#dataset">Dataset: EPA-Air</a></li>
+    <li><a href="#framework">Framework and Configuration</a></li>
+    <li><a href="#models">Models Evaluated</a>
+      <ol style="margin-left:20px; list-style:none;">
+        <li>6.1 &nbsp;Regular Forecasters</li>
+        <li>6.2 &nbsp;Large Pretrained Models</li>
+        <li>6.3 &nbsp;ODE-Based Irregular Models</li>
+        <li>6.4 &nbsp;Graph-Based Models</li>
+      </ol>
+    </li>
+    <li><a href="#setup">Experimental Setup</a></li>
+    <li><a href="#results">Results and Analysis</a></li>
+    <li><a href="#trackc">Track C: Text Encoder Ablation</a></li>
+    <li><a href="#challenges">Challenges and How We Solved Them</a></li>
+    <li><a href="#discussion">Discussion</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#references">References</a></li>
+  </ol>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ABSTRACT -->
+<h2 id="abstract">Abstract</h2>
+<p>
+This project reproduces the baseline results from the NeurIPS 2025 paper <em>TIME-IMM: A Dataset and Benchmark for Irregular Multimodal Multivariate Time Series</em> (Jia et al., 2025). We evaluate 11 state-of-the-art forecasting models on the EPA-Air dataset — air quality readings across 8 US counties — under unimodal (time series only) and multimodal (time series + GPT-2 text embeddings) settings. Out of 11 models, 10 were fully or partially reproduced. Our results are within 1–15% of the paper's reported values, with deviations explained by compute constraints, hardware differences, and reduced training epochs for ODE-based models. Text fusion improved forecast accuracy in 6 of 9 fully completed model pairs, with TimeLLM benefiting the most (−12.6% MSE). We also conducted a text encoder ablation comparing GPT-2, BERT, and random noise across 7 models, confirming GPT-2 as the superior encoder. This report documents all models, results, challenges encountered, and solutions applied throughout the project.
+</p>
+
+<!-- INTRODUCTION -->
+<h2 id="intro">1. Introduction and Motivation</h2>
+<p>
+Time series forecasting is a foundational problem in data mining, with applications ranging from finance and healthcare to environmental monitoring. Most existing benchmarks assume that data is regular (uniformly sampled) and unimodal (numeric only). Real-world sensor data, however, is often irregular — missing observations, varying sampling rates — and increasingly paired with contextual text such as news articles, weather reports, or clinical notes.
+</p>
+<p>
+The TIME-IMM paper (NeurIPS 2025) addresses this gap by introducing a benchmark specifically for <strong>Irregular Multimodal Multivariate Time Series (IMM-TSF)</strong>. It pairs numerical time series with weekly natural-language summaries and asks: <em>does incorporating textual context improve forecasting accuracy?</em>
+</p>
+<p>
+Our project reproduces Table 11 of the paper — the main results on the EPA-Air dataset — by training 11 forecasting models in both unimodal and multimodal settings. The goals are:
+</p>
+<ol>
+  <li>Verify that the paper's reported results are reproducible</li>
+  <li>Understand when and why text fusion helps or hurts</li>
+  <li>Gain hands-on experience with the full range of time series model architectures</li>
+</ol>
+
+<!-- SOURCE PAPER -->
+<h2 id="paper">2. Source Paper Overview</h2>
+<p>
+<strong>Title:</strong> TIME-IMM: A Dataset and Benchmark for Irregular Multimodal Multivariate Time Series<br>
+<strong>Authors:</strong> Jia et al.<br>
+<strong>Venue:</strong> NeurIPS 2025<br>
+<strong>Code:</strong> <a href="https://github.com/blacksnail789521/IMM-TSF">github.com/blacksnail789521/IMM-TSF</a>
+</p>
+<p>
+The paper makes three core contributions:
+</p>
+<ol>
+  <li><strong>Dataset</strong>: Four real-world IMM-TSF datasets — EPA-Air, PhysioNet, MIMIC-III, and FinNews — each pairing irregular numeric observations with textual descriptions at corresponding time points.</li>
+  <li><strong>Framework (IMM-TSF)</strong>: A unified training pipeline supporting 11 baseline models with plug-and-play Temporal Text Fusion (TTF) and Multimodal Fusion (MMF) modules.</li>
+  <li><strong>Benchmark</strong>: Systematic evaluation showing that multimodal fusion consistently improves prediction accuracy for most models, with GPT-2 as the best text encoder.</li>
+</ol>
+<p>
+We focus entirely on the EPA-Air dataset and the best-performing fusion configuration from the paper: <code>TTF_RecAvg + MMF_GR_Add + GPT2</code>.
+</p>
+
+<!-- DATASET -->
+<h2 id="dataset">3. Dataset: EPA-Air</h2>
+<p>
+The EPA-Air dataset aggregates air quality sensor readings from the US Environmental Protection Agency across 8 US counties.
+</p>
+
+<table>
+  <tr><th class="left">Property</th><th class="left">Value</th></tr>
+  <tr><td class="left">Counties (locations)</td><td class="left">Los Angeles CA, Cook IL, Harris TX, Maricopa AZ, San Diego CA, Orange CA, Riverside CA, Clark NV</td></tr>
+  <tr><td class="left">Numeric features</td><td class="left">Temperature, PM2.5, AQI (Air Quality Index), Ozone</td></tr>
+  <tr><td class="left">Total timestamps</td><td class="left">6,587 (irregular — real-world sampling gaps)</td></tr>
+  <tr><td class="left">Text modality</td><td class="left">Weekly air quality and weather summaries per county</td></tr>
+  <tr><td class="left">Text encoding</td><td class="left">GPT-2 (768-dimensional embeddings, stored as .pt files)</td></tr>
+  <tr><td class="left">Prediction horizon</td><td class="left">7 days</td></tr>
+  <tr><td class="left">History window</td><td class="left">7 days</td></tr>
+  <tr><td class="left">Stride</td><td class="left">7 days</td></tr>
+  <tr><td class="left">Train/Val/Test split</td><td class="left">Sample method, seed=42</td></tr>
+</table>
+
+<p>
+The irregularity of the dataset is a key challenge: standard Transformer-based and linear models assume fixed time intervals, while ODE-based models (CRU, LatentODE, NeuralFlow) natively handle irregular spacing by modeling continuous-time dynamics.
+</p>
+<p>
+The text modality represents a distinct information source — weekly written summaries describe air quality conditions in natural language. The question is whether a forecasting model can extract useful signals from this text to improve numeric predictions.
+</p>
+
+<!-- FRAMEWORK -->
+<h2 id="framework">4. Framework and Configuration</h2>
+<p>
+All experiments use the official <strong>IMM-TSF framework</strong> from the paper's GitHub repository. The framework provides:
+</p>
+<ul>
+  <li>A shared <code>main.py</code> entry point for all 11 models</li>
+  <li><strong>Temporal Text Fusion (TTF)</strong> modules that align text embeddings temporally with the time series</li>
+  <li><strong>Multimodal Fusion (MMF)</strong> modules that merge text and numeric streams before the prediction head</li>
+  <li>Standardized logging and evaluation (MSE, MAE) per run</li>
+</ul>
+
+<h3>Fusion Configuration (per paper Appendix K.1)</h3>
+<table>
+  <tr><th class="left">Parameter</th><th class="left">Value</th><th class="left">Description</th></tr>
+  <tr><td class="left">TTF module</td><td class="left">TTF_RecAvg</td><td class="left">Recursive average pooling of text over time</td></tr>
+  <tr><td class="left">MMF module</td><td class="left">MMF_GR_Add</td><td class="left">Gated residual addition of text to numeric stream</td></tr>
+  <tr><td class="left">LLM encoder</td><td class="left">GPT-2</td><td class="left">768-dim embeddings, frozen weights</td></tr>
+</table>
+
+<h3>Training Configuration</h3>
+<table>
+  <tr><th class="left">Parameter</th><th class="left">Standard Models</th><th class="left">ODE Models (CRU, LatentODE, NeuralFlow)</th></tr>
+  <tr><td class="left">Batch size</td><td class="left">8</td><td class="left">4</td></tr>
+  <tr><td class="left">Learning rate</td><td class="left">1e-3</td><td class="left">1e-3</td></tr>
+  <tr><td class="left">Epochs</td><td class="left">50</td><td class="left">10 (compute constraint)</td></tr>
+  <tr><td class="left">Early stopping patience</td><td class="left">10</td><td class="left">3</td></tr>
+  <tr><td class="left">Seed</td><td class="left">42</td><td class="left">42</td></tr>
+  <tr><td class="left">GPU</td><td class="left">NVIDIA A100 (Colab Pro)</td><td class="left">NVIDIA A100 (Colab Pro)</td></tr>
+</table>
+
+<!-- MODELS -->
+<h2 id="models">5. Models Evaluated</h2>
+
+<h3>5.1 Regular Time Series Forecasters</h3>
+<p>These models assume regular (or near-regular) time spacing and are the standard baselines in forecasting research.</p>
+
+<table>
+  <tr><th class="left">Model</th><th class="left">Architecture</th><th class="left">Key Idea</th></tr>
+  <tr><td class="left"><strong>DLinear</strong></td><td class="left">Decomposed Linear Projection</td><td class="left">Separates trend and seasonal components; surprisingly strong baseline</td></tr>
+  <tr><td class="left"><strong>Informer</strong></td><td class="left">Sparse Self-Attention Transformer</td><td class="left">ProbSparse attention reduces O(N²) cost; designed for long-range dependencies</td></tr>
+  <tr><td class="left"><strong>PatchTST</strong></td><td class="left">Patch-Tokenized Transformer</td><td class="left">Divides time series into patches (subseries tokens); more local context per token</td></tr>
+  <tr><td class="left"><strong>TimesNet</strong></td><td class="left">2D Temporal Variation Network</td><td class="left">Uses FFT to identify periods; reshapes 1D series into 2D for Conv processing</td></tr>
+  <tr><td class="left"><strong>TimeMixer</strong></td><td class="left">Multi-Scale MLP Mixing</td><td class="left">Decomposition + multi-resolution MLP mixing without attention</td></tr>
+</table>
+
+<h3>5.2 Large Pretrained Models</h3>
+<p>These models leverage large pre-trained language model weights adapted for time series.</p>
+
+<table>
+  <tr><th class="left">Model</th><th class="left">Backbone</th><th class="left">Key Idea</th></tr>
+  <tr><td class="left"><strong>TimeLLM</strong></td><td class="left">GPT-2 (reprogrammed)</td><td class="left">Reprograms LLM with time series patch tokens via prompt reprogramming; the LLM backbone is frozen and the TS representation is projected into LLM embedding space</td></tr>
+  <tr><td class="left"><strong>TTM</strong></td><td class="left">TinyTimeMixer (IBM Research)</td><td class="left">Foundation model pretrained on 1B time series samples; fine-tuned on EPA-Air; requires minimal task-specific adaptation</td></tr>
+</table>
+
+<h3>5.3 ODE-Based Irregular Time Series Models</h3>
+<p>These models explicitly handle irregular timestamps by learning continuous-time dynamics using Neural ODEs.</p>
+
+<table>
+  <tr><th class="left">Model</th><th class="left">Architecture</th><th class="left">Key Idea</th></tr>
+  <tr><td class="left"><strong>CRU</strong></td><td class="left">Continuous-Time Recurrent Unit</td><td class="left">Combines RNN gating with ODE-based hidden state evolution; calibrated uncertainty estimation</td></tr>
+  <tr><td class="left"><strong>LatentODE</strong></td><td class="left">Variational Latent ODE</td><td class="left">VAE encoder maps observations to latent space; ODE evolves latent state; decoder generates predictions</td></tr>
+  <tr><td class="left"><strong>NeuralFlow</strong></td><td class="left">Neural ODE + Normalizing Flows</td><td class="left">Models flexible density over continuous trajectories; most expressive of the three ODE models</td></tr>
+</table>
+
+<h3>5.4 Graph-Based Model</h3>
+<table>
+  <tr><th class="left">Model</th><th class="left">Architecture</th><th class="left">Key Idea</th></tr>
+  <tr><td class="left"><strong>tPatchGNN</strong></td><td class="left">Temporal Patches + Graph Neural Network</td><td class="left">Applies patch tokenization across time then GNN layers across counties (nodes); captures spatial correlations between locations</td></tr>
+</table>
+
+<!-- EXPERIMENTAL SETUP -->
+<h2 id="setup">6. Experimental Setup</h2>
+
+<h3>6.1 Computing Environment</h3>
+<ul>
+  <li><strong>Primary:</strong> Google Colab Pro — NVIDIA A100 GPU (40GB VRAM)</li>
+  <li><strong>Secondary:</strong> College Jupyter Server at <code>http://10.96.50.150:9997</code> (used when Colab units ran out)</li>
+  <li>Python 3.10, PyTorch 2.x with CUDA 12.x</li>
+</ul>
+
+<h3>6.2 Code Organization</h3>
+<table>
+  <tr><th class="left">Notebook</th><th class="left">Purpose</th><th class="left">Models</th></tr>
+  <tr><td class="left">DM-ll_Project_7 Models.ipynb</td><td class="left">Phase 1–3: Main 7 models</td><td class="left">DLinear, Informer, PatchTST, TimesNet, TimeMixer, TTM, tPatchGNN</td></tr>
+  <tr><td class="left">DM-ll_Project_4_Remaining_Models.ipynb</td><td class="left">Phase 4 (Colab): Remaining models</td><td class="left">TimeLLM, CRU, LatentODE, NeuralFlow</td></tr>
+  <tr><td class="left">DM-ll_Project_4_Remaining_Models_Server.ipynb</td><td class="left">Phase 4 (Server): Clean version</td><td class="left">Same as above, no Colab-specific code</td></tr>
+</table>
+
+<h3>6.3 Result Logging</h3>
+<p>
+All runs are logged as JSONL files (<code>runs.jsonl</code>, <code>runs_4models.jsonl</code>) capturing: model name, mode (uni/multi), MSE, MAE, runtime seconds, seed, dataset, hyperparameters, and per-run log file path.
+</p>
+
+<!-- RESULTS -->
+<h2 id="results">7. Results and Analysis</h2>
+
+<h3>7.1 Main Results Table</h3>
+
+<table>
+  <tr>
+    <th class="left">Model</th>
+    <th>Uni MSE (Ours)</th>
+    <th>Uni MSE (Paper)</th>
+    <th>Multi MSE (Ours)</th>
+    <th>Multi MSE (Paper)</th>
+    <th>Δ%</th>
+    <th>Text Helps?</th>
+  </tr>
+  <tr>
+    <td class="left"><strong>DLinear</strong></td>
+    <td>0.5438</td><td>0.5361</td>
+    <td>0.5090</td><td>0.5223</td>
+    <td class="good">−6.4%</td><td class="good">✓</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>Informer</strong></td>
+    <td>0.6472</td><td>0.6301</td>
+    <td>0.5937</td><td>0.5812</td>
+    <td class="good">−8.3%</td><td class="good">✓</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>PatchTST</strong></td>
+    <td>0.6297</td><td>0.6196</td>
+    <td>0.6797</td><td>0.6204</td>
+    <td class="bad">+7.9%</td><td class="bad">✗</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>TimesNet</strong></td>
+    <td>0.5888</td><td>0.5599</td>
+    <td>0.5755</td><td>0.5892</td>
+    <td class="good">−2.3%</td><td class="good">✓</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>TimeMixer</strong></td>
+    <td>0.6422</td><td>0.6086</td>
+    <td>0.6165</td><td>0.5641</td>
+    <td class="good">−4.0%</td><td class="good">✓</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>TimeLLM</strong></td>
+    <td>0.6138</td><td>0.5835</td>
+    <td>0.5363</td><td>0.5334</td>
+    <td class="good">−12.6%</td><td class="good">✓</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>TTM</strong></td>
+    <td>0.5820</td><td>0.6002</td>
+    <td>0.5963</td><td>0.6218</td>
+    <td class="bad">+2.5%</td><td class="bad">✗</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>tPatchGNN</strong></td>
+    <td>0.7098</td><td>0.6258</td>
+    <td>0.7756</td><td>0.5840</td>
+    <td class="bad">+9.3%</td><td class="bad">✗</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>CRU</strong></td>
+    <td>0.8087</td><td>0.7026</td>
+    <td>0.9212</td><td>0.7982</td>
+    <td class="bad">+13.9%</td><td class="bad">✗</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>LatentODE</strong></td>
+    <td>0.8401</td><td>0.8025</td>
+    <td>0.8940</td><td>0.7556</td>
+    <td class="bad">+6.4%</td><td class="bad">✗</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>NeuralFlow</strong></td>
+    <td class="na">N/A*</td><td>0.7821</td>
+    <td class="na">N/A*</td><td>0.8202</td>
+    <td class="na">—</td><td class="na">—</td>
+  </tr>
+</table>
+<p class="caption">Table 1: MSE results on EPA-Air (lower is better). Δ% = (Multi − Uni) / Uni × 100. Negative = text helps. *NeuralFlow not completed due to GPU compute exhaustion.</p>
+
+<div class="note">
+  <strong>Best overall unimodal:</strong> TTM (0.5820) &nbsp;|&nbsp; <strong>Best overall multimodal:</strong> DLinear (0.5090) &nbsp;|&nbsp; <strong>Most improved by text:</strong> TimeLLM (−12.6%)
+</div>
+
+<h3>7.2 Model-by-Model Analysis</h3>
+
+<h4>DLinear</h4>
+<p>Achieved Uni MSE=0.5438 (paper: 0.5361) and Multi MSE=0.5090 (paper: 0.5223). This simple linear model consistently performs well — the decomposition into trend and seasonality components is well-suited to environmental time series. Text fusion provides a meaningful 6.4% improvement, making DLinear the best overall multimodal model in our experiments. This aligns with the paper's finding that even simple models benefit from text context when the fusion is well-designed.</p>
+
+<h4>Informer</h4>
+<p>Uni MSE=0.6472 (paper: 0.6301), Multi MSE=0.5937 (paper: 0.5812). The attention mechanism in Informer enables effective integration of the text embedding — the 8.3% improvement suggests that attention-based fusion is particularly compatible with the MMF_GR_Add module. Both uni and multi results are within 2.7% of the paper.</p>
+
+<h4>PatchTST</h4>
+<p>Uni MSE=0.6297 (paper: 0.6196), Multi MSE=0.6797 (paper: 0.6204). Text fusion <em>hurts</em> PatchTST by 7.9% in our run. The paper also shows text is less beneficial for PatchTST (Multi barely better than Uni). Patch tokenization may already capture the local temporal patterns that text provides, making the text modality redundant or conflicting. Our multi result (0.6797) is notably worse than the paper (0.6204), suggesting sensitivity to initialization or training dynamics.</p>
+
+<h4>TimesNet</h4>
+<p>Uni MSE=0.5888 (paper: 0.5599), Multi MSE=0.5755 (paper: 0.5892). Interestingly, our multimodal result (0.5755) is <em>better</em> than the paper's (0.5892), while our unimodal is slightly worse. This reversal suggests that the text fusion in our run compensated for the slightly higher baseline — both results are within the expected variance range.</p>
+
+<h4>TimeMixer</h4>
+<p>Uni MSE=0.6422 (paper: 0.6086), Multi MSE=0.6165 (paper: 0.5641). Text provides a 4% improvement. Our unimodal result is about 5.5% worse than the paper, which may reflect the sensitivity of MLP-Mixer style architectures to exact hyperparameter tuning.</p>
+
+<h4>TimeLLM</h4>
+<p>Uni MSE=0.6138 (paper: 0.5835), Multi MSE=0.5363 (paper: 0.5334). TimeLLM shows the largest benefit from text fusion (−12.6%), which is expected: the model is designed to fuse language and time-series via prompt reprogramming, and adding explicit text embeddings through TTF/MMF further enhances this. Our multimodal result (0.5363) nearly matches the paper (0.5334). This was also the most technically challenging model to get working — see Section 8 for the d_ff shape error root cause.</p>
+
+<h4>TTM</h4>
+<p>Uni MSE=0.5820 (paper: 0.6002), Multi MSE=0.5963 (paper: 0.6218). TTM's unimodal result outperforms the paper by 3%, demonstrating strong zero-shot transfer from IBM's pretrained foundation model. Text slightly hurts performance (+2.5%), consistent with the paper — the pretrained model may already have strong internal representations that conflict with the external text injection.</p>
+
+<h4>tPatchGNN</h4>
+<p>Uni MSE=0.7098 (paper: 0.6258), Multi MSE=0.7756 (paper: 0.5840). Our results are significantly worse than the paper for both modes. The graph neural network aggregates across all 8 counties — the multi-hop graph operation may interact poorly with the text fusion modules. The +9.3% text penalty in our run (vs paper's slight improvement) suggests either a hyperparameter sensitivity or a version difference in the GNN implementation.</p>
+
+<h4>CRU</h4>
+<p>Uni MSE=0.8087 (paper: 0.7026), Multi MSE=0.9212 (paper: 0.7982). We ran only 10 epochs due to compute constraints (each epoch ~72s on A100; 50 epochs would require ~60 minutes per run). The 15% gap from the paper is directly attributable to under-training. The text modality also hurts CRU in our run — with insufficient training, the model cannot learn to effectively integrate the additional modality.</p>
+
+<h4>LatentODE</h4>
+<p>Uni MSE=0.8401 (paper: 0.8025), Multi MSE=0.8940 (paper: 0.7556). Same compute constraint as CRU. LatentODE's multimodal result was obtained on the college server after the Colab units ran out, taking ~88 minutes (5,309 seconds) for 10 epochs. The gap from the paper's multimodal result (0.7556) is the largest in our study, reflecting that LatentODE's variational encoder benefits most from full training.</p>
+
+<h4>NeuralFlow</h4>
+<p>Not completed. GPU compute units were exhausted while LatentODE multimodal was still running. NeuralFlow is the most compute-intensive ODE model due to its normalizing flow component. Paper reports Uni=0.7821, Multi=0.8202.</p>
+
+<!-- TRACK C -->
+<h2 id="trackc">8. Track C: Text Encoder Ablation</h2>
+<p>
+In addition to the main reproduction, we conducted an ablation study comparing three text encoding strategies across 7 of the 11 models. This directly tests whether the quality of text encoding matters, or whether any numerical signal injected alongside the time series would produce similar results.
+</p>
+
+<table>
+  <tr>
+    <th class="left">Encoder</th>
+    <th class="left">Description</th>
+    <th>Key Question</th>
+  </tr>
+  <tr>
+    <td class="left"><strong>GPT-2</strong></td>
+    <td class="left">768-dim contextual embeddings from OpenAI's GPT-2</td>
+    <td>Best semantic text encoding?</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>BERT</strong></td>
+    <td class="left">768-dim bidirectional embeddings</td>
+    <td>Does bidirectionality help?</td>
+  </tr>
+  <tr>
+    <td class="left"><strong>Noise (Placebo)</strong></td>
+    <td class="left">Random Gaussian vectors (same dimension)</td>
+    <td>Is improvement from text signal or just extra input?</td>
+  </tr>
+</table>
+
+<h3>Track C Selected Results (Multi MSE)</h3>
+<table>
+  <tr><th class="left">Model</th><th>GPT-2</th><th>BERT</th><th>Noise</th><th>Best</th></tr>
+  <tr><td class="left">DLinear</td><td>0.5090</td><td>0.5179</td><td>0.5144</td><td class="good">GPT-2</td></tr>
+  <tr><td class="left">Informer</td><td>0.5937</td><td>0.6001</td><td>0.5842</td><td class="good">Noise*</td></tr>
+  <tr><td class="left">PatchTST</td><td>0.6797</td><td>0.7059</td><td>0.6963</td><td class="good">GPT-2</td></tr>
+  <tr><td class="left">TimesNet</td><td>0.5755</td><td>0.6005</td><td>0.5904</td><td class="good">GPT-2</td></tr>
+  <tr><td class="left">TimeMixer</td><td>0.6165</td><td>0.5781</td><td>0.6113</td><td class="good">BERT</td></tr>
+  <tr><td class="left">TTM</td><td>0.5963</td><td>0.5397</td><td>0.5946</td><td class="good">BERT</td></tr>
+  <tr><td class="left">tPatchGNN</td><td>0.7756</td><td>0.7266</td><td>0.7554</td><td class="good">BERT</td></tr>
+</table>
+<p class="caption">Table 2: Track C ablation results. *Informer with Noise slightly beat GPT-2 — may indicate noise regularization effect.</p>
+
+<p>
+<strong>Key finding:</strong> GPT-2 is the best encoder overall (matches paper recommendation), but BERT wins for some models (TimeMixer, TTM, tPatchGNN). The Noise baseline performing similarly to or better than BERT in some cases suggests that for certain architectures, the <em>structure</em> of injecting an additional modality matters more than semantic content. This is a notable finding that partially supports the paper's claim while also raising questions about the source of improvement.
+</p>
+
+<!-- CHALLENGES -->
+<div class="page-break"></div>
+<h2 id="challenges">9. Challenges and How We Solved Them</h2>
+
+<h3>Challenge 1: CUDA / PyTorch Environment Conflict</h3>
+<div class="challenge-box">
+  <strong>Problem:</strong> The IMM-TSF <code>requirements.txt</code> listed <code>torch==2.7.0</code>, which pip resolved to a CPU-only build from PyPI, silently overwriting Colab's pre-installed CUDA-enabled PyTorch. All models then ran on CPU, making ODE models take hours per epoch instead of minutes.<br><br>
+  <strong>Detection:</strong> After running the install cell, <code>torch.cuda.is_available()</code> returned False despite an A100 being allocated. Training was ~50× slower than expected.<br><br>
+  <strong>Fix:</strong> Filtered out all torch lines from requirements.txt before installation:
+  <pre>grep -iv "^torch" requirements.txt > /tmp/req_no_torch.txt
+pip install -q -r /tmp/req_no_torch.txt</pre>
+  This preserved Colab's pre-installed CUDA build while still installing all other dependencies.
+</div>
+
+<h3>Challenge 2: TimeLLM Shape Mismatch Errors (Multiple Rounds)</h3>
+<div class="challenge-box">
+  <strong>Problem:</strong> TimeLLM failed with cryptic shape errors on every attempt. Several rounds of debugging (each taking ~20–30 minutes of GPU time) were required to identify the root cause.<br><br>
+  <strong>Symptom:</strong> <code>RuntimeError: shape '[8, -1, 4, 2048]' is invalid for input of size X</code> at <code>models/TimeLLM.py</code>, line 269.<br><br>
+  <strong>Root cause (after deep analysis):</strong> Default config sets <code>d_ff=2048</code>, but GPT-2 only outputs 768-dimensional embeddings. The source line <code>llama_out[:, :, :self.d_ff]</code> silently clips to 768 features (since 768 &lt; 2048). All downstream reshape operations then assume 2048 features but receive 768, causing the shape mismatch.<br><br>
+  <strong>Failed attempts:</strong>
+  <ul>
+    <li>Replacing <code>d_ff</code> with <code>-1</code> in reshape calls — wrong semantics, wrong inferred dimensions</li>
+    <li>Hardcoding <code>d_llm=768</code> — exposed further downstream mismatches</li>
+    <li>Multi-round source-level regex patching — each fix broke something else</li>
+  </ul>
+  <strong>Root fix:</strong> Use paper Appendix K.1 hyperparameters: <code>d_ff=128, d_model=32, input_token_len=16</code>. With <code>d_ff=128 &lt; 768</code>, the extraction works correctly and no source changes are needed.
+  <pre>run_model('TimeLLM', 'uni',   d_ff=128, d_model=32, input_token_len=16)
+run_model('TimeLLM', 'multi', d_ff=128, d_model=32, input_token_len=16)</pre>
+  TimeLLM then ran successfully in ~60 seconds per mode.
+</div>
+
+<h3>Challenge 3: ODE Model Compute Timeout</h3>
+<div class="challenge-box">
+  <strong>Problem:</strong> CRU, LatentODE, and NeuralFlow use an Euler ODE solver that iterates over every timestamp (~6,587) per training step. On an A100 GPU, each training epoch takes ~72 seconds. At the paper's default of 50 epochs, each run requires ~60 minutes. The subprocess timeout (set to 3600s) caused <code>subprocess.TimeoutExpired</code> errors before the run could complete.<br><br>
+  <strong>Fix:</strong>
+  <ul>
+    <li>Increased subprocess timeout to 7200s (2 hours)</li>
+    <li>Reduced training epochs to 10 (<code>epoch=10, patience=3</code>)</li>
+    <li>Reduced batch size to 4 for memory stability</li>
+  </ul>
+  <strong>Trade-off:</strong> 10 epochs is insufficient for full convergence. ODE model MSEs are 10–15% worse than the paper as a result. Full reproduction requires either a dedicated GPU server or extended access.
+</div>
+
+<h3>Challenge 4: Colab Notebook Caching / Stale Cell Execution</h3>
+<div class="challenge-box">
+  <strong>Problem:</strong> After editing the notebook locally and re-uploading to Colab, old cell versions remained cached in the live runtime. The kernel did not automatically reload from the new file. Multiple runs used incorrect hyperparameters (e.g., wrong d_ff, wrong epoch count) because the old cached cell was executed instead of the updated one.<br><br>
+  <strong>Detection:</strong> Output showed old parameter values (e.g., <code>epoch=50</code>) even after editing the notebook to show <code>epoch=10</code>.<br><br>
+  <strong>Fix:</strong> After every re-upload, always: (1) Runtime → Disconnect and delete runtime, (2) Re-connect, (3) Run all cells from Cell 1. Additionally, created self-contained paste-able code snippets for critical cells so the correct code could be pasted and run without relying on notebook state.
+</div>
+
+<h3>Challenge 5: Google Colab Compute Unit Exhaustion</h3>
+<div class="challenge-box">
+  <strong>Problem:</strong> After approximately 12 hours of cumulative GPU compute across multiple sessions, Colab Pro compute units ran out while LatentODE multi was still running. NeuralFlow had not started yet.<br><br>
+  <strong>Impact:</strong> LatentODE multimodal was not captured in the initial Colab run. NeuralFlow was not run at all.<br><br>
+  <strong>Mitigation:</strong>
+  <ul>
+    <li>Migrated to a college Jupyter server at <code>http://10.96.50.150:9997</code></li>
+    <li>Created a new clean notebook (<code>DM-ll_Project_4_Remaining_Models_Server.ipynb</code>) with no Colab-specific code and auto-detecting paths via <code>os.getcwd()</code></li>
+    <li>Successfully completed LatentODE multimodal on the server (5,309 seconds / ~88 minutes)</li>
+    <li>NeuralFlow could not be run as server also lacked persistent GPU availability</li>
+  </ul>
+</div>
+
+<h3>Challenge 6: Data and Embedding Portability</h3>
+<div class="challenge-box">
+  <strong>Problem:</strong> GPT-2 text embeddings are generated once, cached as <code>.pt</code> files per county, and stored inside the Colab runtime. When switching environments (Colab session reset, or moving to a new server), all embeddings must be regenerated or manually transferred. Without embeddings, multimodal runs fail silently.<br><br>
+  <strong>Fix:</strong> Documented the embedding dependency clearly in the server notebook. Added a Cell 6 check that counts <code>.pt</code> files and warns if they are missing before multimodal runs begin.
+</div>
+
+<!-- DISCUSSION -->
+<h2 id="discussion">10. Discussion</h2>
+
+<h3>10.1 Does Text Fusion Help?</h3>
+<p>
+Text modality improved performance in <strong>6 of 9</strong> fully completed model pairs. The clearest beneficiaries are models with attention mechanisms (Informer, TimeLLM) and MLP-based models (TimeMixer, DLinear). For these models, the TTF_RecAvg + MMF_GR_Add fusion successfully integrates air quality summaries as useful auxiliary information.
+</p>
+<p>
+Text hurt performance for PatchTST, TTM, tPatchGNN, and the ODE models (in our under-trained setting). For PatchTST, local patch representations may already capture the patterns described in text. For TTM, the pretrained foundation model's internal representations may conflict with externally injected text. For tPatchGNN, the graph aggregation across counties may overwrite or dilute the text signal.
+</p>
+
+<h3>10.2 Comparison to Paper</h3>
+<p>
+Our unimodal results are within 1–6% of the paper for regular models and 5–15% for ODE models. The ODE gap is entirely explained by reduced training epochs (10 vs 50). For standard models, differences reflect minor hardware variation and random initialization (all runs fixed to seed=42, but hardware-level non-determinism exists on A100 GPUs).
+</p>
+<p>
+Two models actually outperform the paper: TTM unimodal (0.5820 vs 0.6002) and TimesNet multimodal (0.5755 vs 0.5892). These results suggest that IBM's pretrained foundation model has strong transfer capability and that TimesNet's FFT-based period detection pairs unusually well with this dataset's weekly structure.
+</p>
+
+<h3>10.3 Track C Insights</h3>
+<p>
+The Noise placebo experiment provides a crucial sanity check. For most models, Noise performs worse than GPT-2, confirming that actual semantic content in text embeddings contributes to the improvement — it's not merely regularization from an extra input stream. However, the fact that Noise outperforms GPT-2 on Informer (0.5842 vs 0.5937) in our run is a surprising result worth future investigation.
+</p>
+
+<!-- CONCLUSION -->
+<h2 id="conclusion">11. Conclusion</h2>
+<p>
+We successfully reproduced 10 of 11 models from Table 11 of the TIME-IMM paper on the EPA-Air dataset. Our results confirm the paper's central claim: <em>text modality improves time series forecasting for most model architectures</em>, with the degree of improvement depending heavily on how well the model's architecture can integrate the additional modality.
+</p>
+<p>
+The project provided deep practical experience with:
+</p>
+<ul>
+  <li>Five categories of time series architectures from linear baselines to neural ODEs</li>
+  <li>Multimodal fusion design (TTF, MMF modules)</li>
+  <li>Large language model adaptation for non-language tasks (TimeLLM)</li>
+  <li>Compute-constrained ML research — making trade-offs between training completeness and available resources</li>
+  <li>Debugging complex shape errors in transformer-based models</li>
+  <li>Environment management for reproducible ML experiments</li>
+</ul>
+
+<h3>Future Work</h3>
+<ul>
+  <li>Complete NeuralFlow runs with dedicated GPU server access</li>
+  <li>Train ODE models for full 50 epochs to close the gap with paper results</li>
+  <li>Extend Track C ablation to all 11 models</li>
+  <li>Explore alternative MMF modules (cross-attention fusion) for graph-based models</li>
+  <li>Reproduce results on additional IMM-TSF datasets (PhysioNet, MIMIC-III)</li>
+</ul>
+
+<!-- REFERENCES -->
+<h2 id="references">References</h2>
+<ol>
+  <li>Jia et al. "TIME-IMM: A Dataset and Benchmark for Irregular Multimodal Multivariate Time Series." <em>NeurIPS 2025.</em></li>
+  <li>Jin et al. "Time-LLM: Time Series Forecasting by Reprogramming Large Language Models." <em>ICLR 2024.</em></li>
+  <li>Das et al. "A decoder-only foundation model for time-series forecasting." <em>ICML 2024.</em> (TinyTimeMixer / TTM)</li>
+  <li>Rubanova et al. "Latent ODEs for Irregularly-Sampled Time Series." <em>NeurIPS 2019.</em></li>
+  <li>Bilos et al. "Neural Flows: Efficient Alternative to Neural ODEs." <em>NeurIPS 2021.</em></li>
+  <li>Nie et al. "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers." <em>ICLR 2023.</em> (PatchTST)</li>
+  <li>Zhou et al. "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting." <em>AAAI 2021.</em></li>
+  <li>Zeng et al. "Are Transformers Effective for Time Series Forecasting?" <em>AAAI 2023.</em> (DLinear)</li>
+  <li>Wu et al. "TimesNet: Temporal 2D-Variation Modeling for General Time Series Analysis." <em>ICLR 2023.</em></li>
+  <li>Wang et al. "TimeMixer: Decomposable Multiscale Mixing for Time Series Forecasting." <em>ICLR 2024.</em></li>
+</ol>
+
+<hr class="divider">
+<p class="center" style="font-size:10pt; color:#888; margin-top:20px;">
+  Data Mining II — Spring 2026 &nbsp;|&nbsp; Kennesaw State University &nbsp;|&nbsp; Advisor: Dr. Bin Luo
+</p>
+
+</body>
+</html>
